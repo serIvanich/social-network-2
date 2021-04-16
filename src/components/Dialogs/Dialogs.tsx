@@ -1,7 +1,7 @@
 import React from 'react'
 import {NavLink} from 'react-router-dom'
 import s from './Dialogs.module.css'
-import {DialogsPageType} from "../../myState/MyState";
+import {DialogsPageType} from "../../redux/MyState";
 
 type DialogsItemPropsType = {
     id: number
@@ -28,13 +28,17 @@ const Message: React.FC<MessagePropsType> = ({message}) => {
 }
 
 type DialogsPropsType = {
-    dialogsPage: DialogsPageType
+    state: DialogsPageType
 }
 
-export const Dialogs: React.FC<DialogsPropsType> = ({dialogsPage}) => {
-    const dialogs = dialogsPage.dialogItems
-    const dialogsItems = dialogsPage.dialogItems.map( d => <DialogItem key={d.id} id={d.id} name={d.name}/>)
-    const dialogsTexts = dialogsPage.dialogTexts.map( (t,i) => <Message key={i} message={t.dialogText}/>)
+export const Dialogs: React.FC<DialogsPropsType> = ({state}) => {
+
+    const dialogsItems = state.dialogItems.map( d => <DialogItem key={d.id} id={d.id} name={d.name}/>)
+    const dialogsTexts = state.dialogTexts.map( (t,i) => <Message key={i} message={t.dialogText}/>)
+    const newMessage = React.createRef<HTMLTextAreaElement>()
+    const addMessage = () => {
+        console.log(newMessage.current?.value)
+    }
     return (
         <div className={s.dialogsContainer}>
             <div className={s.dialogItem}>
@@ -42,7 +46,14 @@ export const Dialogs: React.FC<DialogsPropsType> = ({dialogsPage}) => {
             </div>
             <div className={s.messages}>
                 {dialogsTexts}
+
+                <div className={s.textarea}>
+                    <textarea ref={newMessage}>for message</textarea>
+                </div>
+                <button onClick={addMessage}>add message</button>
+
             </div>
+
         </div>
     )
 }

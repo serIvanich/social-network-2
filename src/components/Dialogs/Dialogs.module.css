@@ -1,6 +1,6 @@
 .dialogsContainer {
     display: grid;
-    grid-template-columns: 3fr 7fr;
+    grid-template-columns: 1.5fr 7fr;
 }
 
 .item {
@@ -17,4 +17,11 @@
 .message {
     padding-top: 10px;
     color: darkgray;
+}
+
+.textarea textarea {
+    margin-top: 80px;
+
+    width: 150px;
+    height: 15px;
 }

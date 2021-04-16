@@ -4,7 +4,7 @@ import './index.css';
 import {App} from './App';
 import reportWebVitals from './reportWebVitals';
 import {BrowserRouter} from "react-router-dom";
-import {myState} from "./myState/MyState";
+import {myState} from "./redux/MyState";
 
 ReactDOM.render(
   <React.StrictMode>

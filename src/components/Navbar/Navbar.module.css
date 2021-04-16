@@ -1,10 +1,15 @@
 .navbar {
+    display: grid;
+
+    grid-template-rows: 170px 1fr;
+
     grid-area: n;
     background-color: lavender;
+
 }
 .item {
     display: block;
-    margin-left: 40%;
+
     margin-top: 5%;
     color: darkcyan;
     text-decoration: none;
@@ -14,9 +19,22 @@
     color: darkgoldenrod;
 }
 
+.blockNavlink {
+    margin: 0 auto;
+}
 
-/*.item .active a*/
-/*{*/
+.sidebar {
+    margin: 7px auto;
 
-/*    color: darkred;*/
-/*}*/
+}
+
+.friend {
+    display: inline-block;
+    margin: 0px 10px;
+}
+
+.friend img {
+    width: 25px;
+    height: 25px;
+    border-radius: 15px;
+}

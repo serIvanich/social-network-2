@@ -1,12 +1,12 @@
 import React from 'react'
 import s from './Profile.module.css'
 import {MyPosts} from './MyPosts/MyPosts';
-import {ProfilePageType} from "../../myState/MyState";
+import {ProfilePageType} from "../../redux/MyState";
 
 type ProfilePropsType = {
-    profilePage: ProfilePageType
+    state: ProfilePageType
 }
-export const Profile: React.FC<ProfilePropsType> = ({profilePage}) => {
+export const Profile: React.FC<ProfilePropsType> = ({state}) => {
 
     return (
         <div className={s.profile}>
@@ -14,7 +14,7 @@ export const Profile: React.FC<ProfilePropsType> = ({profilePage}) => {
             <div>
 ava and my profile
             </div>
-            <MyPosts messages={profilePage.messages}/>
+            <MyPosts messages={state.messages}/>
         </div>
     )
 }
