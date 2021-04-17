@@ -29,16 +29,22 @@ const Message: React.FC<MessagePropsType> = ({message}) => {
 
 type DialogsPropsType = {
     state: DialogsPageType
-    addDialogsText: (message: string | undefined) => void
+    addDialogsText: () => void
+    updateDialogsMessage: (text: string | undefined) => void
 }
 
-export const Dialogs: React.FC<DialogsPropsType> = ({state, addDialogsText}) => {
+export const Dialogs: React.FC<DialogsPropsType> = ({state, addDialogsText, updateDialogsMessage}) => {
 
     const dialogsItems = state.dialogItems.map( d => <DialogItem key={d.id} id={d.id} name={d.name}/>)
     const dialogsTexts = state.dialogTexts.map( (t,i) => <Message key={i} message={t.message}/>)
-    const newMessage = React.createRef<HTMLTextAreaElement>()
+    const newMessageElement = React.createRef<HTMLTextAreaElement>()
     const addMessage = () => {
-        addDialogsText(newMessage.current?.value)
+        addDialogsText()
+    }
+    const onChangeMessage = () => {
+        debugger
+        const text = newMessageElement.current?.value
+        updateDialogsMessage(text)
     }
     return (
         <div className={s.dialogsContainer}>
@@ -49,7 +55,7 @@ export const Dialogs: React.FC<DialogsPropsType> = ({state, addDialogsText}) => 
                 {dialogsTexts}
 
                 <div className={s.textarea}>
-                    <textarea ref={newMessage}>for message</textarea>
+                    <textarea ref={newMessageElement} value={state.newMessage} onChange={onChangeMessage}>for message</textarea>
                 </div>
                 <button onClick={addMessage}>add message</button>
 

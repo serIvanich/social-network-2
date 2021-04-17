@@ -11,6 +11,7 @@ export type DialogItemType = {
 }
 export type ProfilePageType = {
     messages: Array<MessageType>
+    textMessage: string | undefined
 }
 type DialogTextType = {
     id: number
@@ -19,6 +20,7 @@ type DialogTextType = {
 export type DialogsPageType = {
     dialogItems: Array<DialogItemType>
     dialogTexts: Array<DialogTextType>
+    newMessage: string | undefined
 
 }
 export type FriendsType = {
@@ -56,7 +58,8 @@ export const state: StateType = {
                 message: `Don't forget for me, please!`,
                 likesCount: 15
             }
-        ]
+        ],
+        textMessage: ''
     },
     dialogsPage: {
         dialogItems: [{id: 1, name: 'Serik'},
@@ -68,7 +71,8 @@ export const state: StateType = {
         dialogTexts: [{id: 9, message: 'Hello.How are you?'},
             {id: 10, message: `Hi, thank's, i am fine.And how are you?`},
             {id: 11, message: 'I am fine too!'},
-        ]
+        ],
+        newMessage: 'hello'
     },
     sidebar: {
         friends: [
@@ -80,27 +84,36 @@ export const state: StateType = {
      }
 }
 
-const func = () => {
-    console.log('hi')
-}
-
-export const addPost = (message: string | undefined) => {
+export const addPost = () => {
     const newPost = {
         id: 4,
-        message: message,
+        message: state.profilePage.textMessage,
         likesCount: 19
     }
 
     state.profilePage.messages.push(newPost)
+    state.profilePage.textMessage = ''
     rerenderEntireTree(state)
-    
+
 }
 
-export const addDialogsText = (message: string | undefined) => {
+export const addDialogsText = () => {
     const newText = {
         id: 13,
-        message: message
+        message: state.dialogsPage.newMessage
     }
     state.dialogsPage.dialogTexts.push(newText)
+    state.dialogsPage.newMessage = ''
+    rerenderEntireTree(state)
+}
+
+export const changeTextMessage = (text: string | undefined) => {
+
+    state.profilePage.textMessage = text
+    rerenderEntireTree(state)
+}
+export const updateDialogsMessage = (newMessage: string | undefined) => {
+
+    state.dialogsPage.newMessage = newMessage
     rerenderEntireTree(state)
 }
