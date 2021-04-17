@@ -18,7 +18,7 @@ const DialogItem: React.FC<DialogsItemPropsType> = ({id, name}) => {
 }
 
 type MessagePropsType = {
-    message: string
+    message: string | undefined
 }
 
 const Message: React.FC<MessagePropsType> = ({message}) => {
@@ -29,15 +29,16 @@ const Message: React.FC<MessagePropsType> = ({message}) => {
 
 type DialogsPropsType = {
     state: DialogsPageType
+    addDialogsText: (message: string | undefined) => void
 }
 
-export const Dialogs: React.FC<DialogsPropsType> = ({state}) => {
+export const Dialogs: React.FC<DialogsPropsType> = ({state, addDialogsText}) => {
 
     const dialogsItems = state.dialogItems.map( d => <DialogItem key={d.id} id={d.id} name={d.name}/>)
-    const dialogsTexts = state.dialogTexts.map( (t,i) => <Message key={i} message={t.dialogText}/>)
+    const dialogsTexts = state.dialogTexts.map( (t,i) => <Message key={i} message={t.message}/>)
     const newMessage = React.createRef<HTMLTextAreaElement>()
     const addMessage = () => {
-        console.log(newMessage.current?.value)
+        addDialogsText(newMessage.current?.value)
     }
     return (
         <div className={s.dialogsContainer}>
