@@ -42,7 +42,7 @@ export const Dialogs: React.FC<DialogsPropsType> = ({state, addDialogsText, upda
         addDialogsText()
     }
     const onChangeMessage = () => {
-        debugger
+
         const text = newMessageElement.current?.value
         updateDialogsMessage(text)
     }
@@ -55,7 +55,7 @@ export const Dialogs: React.FC<DialogsPropsType> = ({state, addDialogsText, upda
                 {dialogsTexts}
 
                 <div className={s.textarea}>
-                    <textarea ref={newMessageElement} value={state.newMessage} onChange={onChangeMessage}>for message</textarea>
+                    <textarea ref={newMessageElement} value={state.newMessage} onChange={onChangeMessage}/>
                 </div>
                 <button onClick={addMessage}>add message</button>
 
