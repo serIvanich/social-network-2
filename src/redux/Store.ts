@@ -2,6 +2,9 @@
 
 export const ADD_POST = 'ADD-POST'
 export const CHANGE_TEXT_MESSAGE = 'CHANGE-TEXT-MESSAGE'
+export const ADD_DIALOGS_TEXT = 'ADD-DIALOGS-TEXT'
+export const UPDATE_DIALOGS_TEXT = 'UPDATE-DIALOGS-TEXT'
+
 
 export type MessageType = {
     id: number
@@ -178,6 +181,19 @@ export const store: StoreType = {
 
         }else if (action.type === CHANGE_TEXT_MESSAGE) {
             this._state.profilePage.textMessage = action.text
+            this._callSubscriber()
+
+        }else if (action.type === ADD_DIALOGS_TEXT) {
+            const newText = {
+                id: 13,
+                message: this._state.dialogsPage.newMessage
+            }
+            this._state.dialogsPage.dialogTexts.push(newText)
+            this._state.dialogsPage.newMessage = ''
+            this._callSubscriber()
+
+        }else if (action.type === UPDATE_DIALOGS_TEXT) {
+            this._state.dialogsPage.newMessage = action.text
             this._callSubscriber()
 
         }
