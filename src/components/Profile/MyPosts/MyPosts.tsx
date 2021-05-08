@@ -1,14 +1,16 @@
-import React, {ChangeEvent, LegacyRef} from "react";
+import React from "react";
 import s from './MyPosts.module.css'
 import {Post} from "./Post/Post"
 import {MessageType} from "../../../redux/MyState"
-import {ADD_POST, CHANGE_TEXT_MESSAGE, StoreType} from "../../../redux/Store";
+import {addPostActionCreate, changeTextMessageActionCreate, StoreType} from "../../../redux/state";
 
 type MyPostPropsType = {
     messages: Array<MessageType>
     textMessage: string | undefined
     store: StoreType
 }
+
+
 export const MyPosts: React.FC<MyPostPropsType> = ({
                                                        messages,
                                                        textMessage,
@@ -19,11 +21,11 @@ export const MyPosts: React.FC<MyPostPropsType> = ({
     })
     const newPostElement = React.createRef<HTMLTextAreaElement>()
     const clickPost = () => {
-        store.dispatch({type: ADD_POST})
+        store.dispatch(addPostActionCreate())
     }
     const onChangeText = () => {
         const text = newPostElement.current?.value
-        store.dispatch({type: CHANGE_TEXT_MESSAGE, text})
+        store.dispatch(changeTextMessageActionCreate(text))
     }
     return (
         <div className={s.myPost}>
@@ -40,3 +42,4 @@ export const MyPosts: React.FC<MyPostPropsType> = ({
         </div>
     )
 }
+

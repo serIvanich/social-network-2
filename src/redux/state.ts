@@ -1,5 +1,3 @@
-
-
 export const ADD_POST = 'ADD-POST'
 export const CHANGE_TEXT_MESSAGE = 'CHANGE-TEXT-MESSAGE'
 export const ADD_DIALOGS_TEXT = 'ADD-DIALOGS-TEXT'
@@ -44,26 +42,21 @@ export type StateType = {
     sidebar: SidebarType
 }
 
-type ActionType = {
+export type ActionType = {
     type: string
-    text?: string
+    text?: string | undefined
 }
 export type StoreType = {
     _callSubscriber: () => void
     _state: StateType
     getState: () => StateType
     subscriber: (observer: () => void) => void
-    addPost: () => void
-    addDialogsText: () => void
-    changeTextMessage: (text: string | undefined) => void
-    updateDialogsMessage: (newMessage: string | undefined) => void
+
     dispatch: (action: ActionType) => void
 }
 
 
-
-
-export const store: StoreType = {
+export const state: StoreType = {
     _callSubscriber() {
         console.log('no subscribers (observers)')
     },
@@ -133,39 +126,8 @@ export const store: StoreType = {
     },
 
 
-    addPost() {
-        const newPost = {
-            id: 4,
-            message: this._state.profilePage.textMessage,
-            likesCount: 19
-        }
 
-        this._state.profilePage.messages.push(newPost)
-        this._state.profilePage.textMessage = ''
-        this._callSubscriber()
 
-    },
-
-    addDialogsText() {
-        const newText = {
-            id: 13,
-            message: this._state.dialogsPage.newMessage
-        }
-        this._state.dialogsPage.dialogTexts.push(newText)
-        this._state.dialogsPage.newMessage = ''
-        this._callSubscriber()
-    },
-
-    changeTextMessage(text: string | undefined) {
-
-        this._state.profilePage.textMessage = text
-        this._callSubscriber()
-    },
-    updateDialogsMessage(newMessage: string | undefined) {
-
-        this._state.dialogsPage.newMessage = newMessage
-        this._callSubscriber()
-    },
 
     dispatch(action) {
         if (action.type === ADD_POST) {
@@ -179,11 +141,11 @@ export const store: StoreType = {
             this._state.profilePage.textMessage = ''
             this._callSubscriber()
 
-        }else if (action.type === CHANGE_TEXT_MESSAGE) {
+        } else if (action.type === CHANGE_TEXT_MESSAGE) {
             this._state.profilePage.textMessage = action.text
             this._callSubscriber()
 
-        }else if (action.type === ADD_DIALOGS_TEXT) {
+        } else if (action.type === ADD_DIALOGS_TEXT) {
             const newText = {
                 id: 13,
                 message: this._state.dialogsPage.newMessage
@@ -192,7 +154,7 @@ export const store: StoreType = {
             this._state.dialogsPage.newMessage = ''
             this._callSubscriber()
 
-        }else if (action.type === UPDATE_DIALOGS_TEXT) {
+        } else if (action.type === UPDATE_DIALOGS_TEXT) {
             this._state.dialogsPage.newMessage = action.text
             this._callSubscriber()
 
@@ -201,6 +163,19 @@ export const store: StoreType = {
     }
 }
 
-
+export const addPostActionCreate = (): ActionType => ({
+    type: ADD_POST
+})
+export const changeTextMessageActionCreate = (text: string | undefined): ActionType => ({
+    type: CHANGE_TEXT_MESSAGE,
+    text: text
+})
+export const addDialogsTextActionCreate = (): ActionType => ({
+    type: ADD_DIALOGS_TEXT
+})
+export const updateDialogsMessageActionCreate = (text: string | undefined): ActionType => ({
+    type: UPDATE_DIALOGS_TEXT,
+    text: text
+})
 
 
