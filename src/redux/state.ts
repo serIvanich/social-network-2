@@ -56,7 +56,7 @@ export type StoreType = {
 }
 
 
-export const state: StoreType = {
+export const store: StoreType = {
     _callSubscriber() {
         console.log('no subscribers (observers)')
     },

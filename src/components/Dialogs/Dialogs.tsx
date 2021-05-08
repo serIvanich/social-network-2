@@ -1,8 +1,15 @@
 import React from 'react'
 import {NavLink} from 'react-router-dom'
 import s from './Dialogs.module.css'
-import {DialogsPageType} from "../../redux/MyState";
-import {addDialogsTextActionCreate, StoreType, updateDialogsMessageActionCreate} from "../../redux/state";
+
+import {
+    ActionType,
+    addDialogsTextActionCreate,
+    DialogsPageType,
+    StateType,
+    StoreType,
+    updateDialogsMessageActionCreate
+} from "../../redux/state";
 
 type DialogsItemPropsType = {
     id: number
@@ -30,21 +37,21 @@ const Message: React.FC<MessagePropsType> = ({message}) => {
 
 type DialogsPropsType = {
     state: DialogsPageType
-    store: StoreType
+    dispatch: (action: ActionType) => void
 }
 
-export const Dialogs: React.FC<DialogsPropsType> = ({state, store}) => {
+export const Dialogs: React.FC<DialogsPropsType> = ({state, dispatch}) => {
 
     const dialogsItems = state.dialogItems.map( d => <DialogItem key={d.id} id={d.id} name={d.name}/>)
     const dialogsTexts = state.dialogTexts.map( (t,i) => <Message key={i} message={t.message}/>)
     const newMessageElement = React.createRef<HTMLTextAreaElement>()
     const addMessage = () => {
-        store.dispatch(addDialogsTextActionCreate())
+        dispatch(addDialogsTextActionCreate())
     }
     const onChangeMessage = () => {
 
         const text = newMessageElement.current?.value
-        store.dispatch(updateDialogsMessageActionCreate(text))
+        dispatch(updateDialogsMessageActionCreate(text))
     }
     return (
         <div className={s.dialogsContainer}>
@@ -55,7 +62,7 @@ export const Dialogs: React.FC<DialogsPropsType> = ({state, store}) => {
                 {dialogsTexts}
 
                 <div className={s.textarea}>
-                    <textarea ref={newMessageElement} value={state.newMessage} onChange={onChangeMessage}/>
+                    <textarea value={state.newMessage} onChange={onChangeMessage}/>
                 </div>
                 <button onClick={addMessage}>add message</button>
 
