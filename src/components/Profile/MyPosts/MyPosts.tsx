@@ -1,14 +1,14 @@
-import React from "react";
+import React, { ChangeEvent } from "react";
 import s from './MyPosts.module.css'
 import {Post} from "./Post/Post"
-
 import {
     ActionType,
     addPostActionCreate,
     changeTextMessageActionCreate,
-    MessageType,
-    StoreType
-} from "../../../redux/state";
+    MessageType
+} from "../../../redux/profile-reducer";
+
+
 
 type MyPostPropsType = {
     messages: Array<MessageType>
@@ -17,7 +17,7 @@ type MyPostPropsType = {
 }
 
 
-export const MyPosts: React.FC<MyPostPropsType> = ({
+export const MyPosts: React.FC<MyPostPropsType> = React.memo(({
                                                        messages,
                                                        textMessage,
                                                        dispatch
@@ -29,8 +29,8 @@ export const MyPosts: React.FC<MyPostPropsType> = ({
     const clickPost = () => {
         dispatch(addPostActionCreate())
     }
-    const onChangeText = () => {
-        const text = newPostElement.current?.value
+    const onChangeText = (e: ChangeEvent<HTMLTextAreaElement>) => {
+        const text = e.currentTarget.value
         dispatch(changeTextMessageActionCreate(text))
     }
     return (
@@ -47,5 +47,5 @@ export const MyPosts: React.FC<MyPostPropsType> = ({
 
         </div>
     )
-}
+})
 
