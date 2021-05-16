@@ -7,25 +7,21 @@ export type DialogItemType = {
     name: string
 }
 
-type DialogTextType = {
+export type DialogsTextsType = {
     id: number
-    message: string | undefined
+    message: string
 }
 export type DialogsPageType = {
     dialogItems: Array<DialogItemType>
-    dialogTexts: Array<DialogTextType>
-    newMessage: string | undefined
-
+    dialogTexts: Array<DialogsTextsType>
+    newMessage: string
 }
 
 
-export type ActionType = {
-    type: string
-    text?: string | undefined
-}
+export type DialogsActionType = AddDialogsTextActionCreate | UpdateDialogsMessageActionCreate
 
 
-const initialState = {
+const initialState: DialogsPageType = {
     dialogItems: [{id: 1, name: 'Serik'},
         {id: 2, name: 'Olya'},
         {id: 3, name: 'Gleb'},
@@ -40,7 +36,7 @@ const initialState = {
 }
 
 
-export const dialogsReducer = (state: DialogsPageType = initialState, action: ActionType): DialogsPageType => {
+export const dialogsReducer = (state: DialogsPageType = initialState, action: DialogsActionType): DialogsPageType => {
     switch (action.type) {
         case (ADD_DIALOGS_TEXT):
 
@@ -60,10 +56,17 @@ export const dialogsReducer = (state: DialogsPageType = initialState, action: Ac
     }
 }
 
-export const addDialogsTextActionCreate = (): ActionType => ({
+type AddDialogsTextActionCreate = {type: typeof ADD_DIALOGS_TEXT}
+export const addDialogsTextActionCreate = (): AddDialogsTextActionCreate => ({
     type: ADD_DIALOGS_TEXT
 })
-export const updateDialogsMessageActionCreate = (text: string | undefined): ActionType => ({
+
+type UpdateDialogsMessageActionCreate = {
+    type: typeof  UPDATE_DIALOGS_TEXT,
+    text: string
+
+}
+export const updateDialogsMessageActionCreate = (text: string ): UpdateDialogsMessageActionCreate => ({
     type: UPDATE_DIALOGS_TEXT,
     text: text
 })

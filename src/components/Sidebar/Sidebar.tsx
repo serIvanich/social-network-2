@@ -1,12 +1,24 @@
 import React from "react";
-import s from "../Sidebar/Sidebar.module.css";
+import s from "./Sidebar.module.css";
+import {SidebarType} from "../../redux/sidebar-reducer";
+
+type AllSidebarPropsType = {
+    sidebar: SidebarType
+}
+
+export const AllSidebar: React.FC<AllSidebarPropsType> = React.memo((props) => {
+    const sidebarItems = props.sidebar.friends.map(i => <Sidebar key={i.id} name={i.name} src={i.src}/>)
+    return <div>{sidebarItems}</div>
+
+
+})
 
 type SidebarPropsType = {
-    name: string
     src: string
+    name: string
 }
-export const SidebarUser: React.FC<SidebarPropsType> = React.memo(({name, src}) => {
 
+const Sidebar: React.FC<SidebarPropsType> = React.memo(({src, name}) => {
     return <div className={s.friend}>
 
         <img src={src}/>
