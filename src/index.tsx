@@ -8,8 +8,6 @@ import  store  from './redux/store';
 import {Provider} from "react-redux";
 
 
-const rerenderEntireTree = () => {
-
 
     ReactDOM.render(
         <React.StrictMode>
@@ -20,12 +18,9 @@ const rerenderEntireTree = () => {
 
             </BrowserRouter>
         </React.StrictMode>, document.getElementById('root'))
-}
 
 
-rerenderEntireTree()
 
-store.subscribe(rerenderEntireTree)
 
 
 
