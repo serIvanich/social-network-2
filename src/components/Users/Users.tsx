@@ -64,13 +64,13 @@ export const Users: React.FC<UsersPropsType> = (props) => {
                 },
                 {
                     id: v1(),
-                    fullName: 'Shura',
+                    fullName: 'Victor',
                     userPhoto: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSoAFIKgHQuF7JPyT4CVoAcThYkDC3TZPvNA&usqp=CAU',
                     followed: false,
                     status: 'do it',
                     location: {
-                        cityName: 'Hmelnizck',
-                        countryName: 'Luna'
+                        cityName: 'Minsk',
+                        countryName: 'Belarus'
                     }
 
                 }
@@ -83,6 +83,9 @@ export const Users: React.FC<UsersPropsType> = (props) => {
             {
                 props.users.map(u => <div key={u.id} className={s.userContainer}>
                     <div>
+                        <div>
+                            {u.fullName}
+                        </div>
                         <img className={s.avatar} src={u.userPhoto} />
                         <div className={s.button}>
                             {u.followed
@@ -92,6 +95,7 @@ export const Users: React.FC<UsersPropsType> = (props) => {
                         </div>
                     </div>
                     <div className={s.userInfo}>
+
                         <div>
                             My status:
                             {`\t ${u.status}`}
