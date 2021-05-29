@@ -1,121 +1,76 @@
 import React from 'react'
 import {UserType} from "../../redux/users-reducer"
 import s from './Users.module.css'
-import {v1} from "uuid";
+import userPhoto from './../../assets/images/users2.jpg'
+import axios from 'axios';
 
 type UsersPropsType = {
     users: Array<UserType>
-    follow: (userId: string) => void
-    unfollow: (userId: string) => void
+    follow: (userId: number) => void
+    unfollow: (userId: number) => void
     setUsers: (users: Array<UserType>) => void
 
 }
-export const Users: React.FC<UsersPropsType> = (props) => {
 
-    if (props.users.length === 0) {
-        props.setUsers(
-             [
-                {
-                    id: v1(),
-                    fullName: 'Gleb',
-                    userPhoto: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSoAFIKgHQuF7JPyT4CVoAcThYkDC3TZPvNA&usqp=CAU',
-                    followed: true,
-                    status: 'i am a best',
-                    location: {
-                        cityName: 'Dnepr',
-                        countryName: 'Ukrane'
-                    }
-                },
-                {
-                    id: v1(),
-                    fullName: 'Olga',
-                    userPhoto: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4AuCaCDS8eeLRXGL0pFD9cIddYuHc8AJoSA&usqp=CAU',
-                    followed: true,
-                    status: 'loved girl',
-                    location: {
-                        cityName: 'Dnepr',
-                        countryName: 'Ukrane'
-                    }
 
-                },
-                {
-                    id: v1(),
-                    fullName: 'Serik',
-                    userPhoto: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSoAFIKgHQuF7JPyT4CVoAcThYkDC3TZPvNA&usqp=CAU',
-                    followed: true,
-                    status: 'i am a good man',
-                    location: {
-                        cityName: 'Dnepr',
-                        countryName: 'Ukrane'
-                    }
+type ResponseType = {
+    items: UserType []
+    totalCount: number
+    error: string
+}
 
-                },
-                {
-                    id: v1(),
-                    fullName: 'Dimich',
-                    userPhoto: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4AuCaCDS8eeLRXGL0pFD9cIddYuHc8AJoSA&usqp=CAU',
-                    followed: false,
-                    status: 'Verry big motivator',
-                    location: {
-                        cityName: 'Minsk',
-                        countryName: 'Belarus'
-                    }
+class Users extends React.Component<UsersPropsType, UserType[]> {
 
-                },
-                {
-                    id: v1(),
-                    fullName: 'Victor',
-                    userPhoto: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSoAFIKgHQuF7JPyT4CVoAcThYkDC3TZPvNA&usqp=CAU',
-                    followed: false,
-                    status: 'do it',
-                    location: {
-                        cityName: 'Minsk',
-                        countryName: 'Belarus'
-                    }
-
-                }
-            ]
-        )
+    constructor(props: any) {
+        super(props);
+        axios.get('https://social-network.samuraijs.com/api/1.0/users').then((response: any) => {
+            props.setUsers(response.data.items)
+        })
     }
 
-    return (
-        <div>
-            {
-                props.users.map(u => <div key={u.id} className={s.userContainer}>
-                    <div>
+    render() {
+        return (
+
+            <div>
+                {
+                    this.props.users.map(u => <div key={u.id} className={s.userContainer}>
                         <div>
-                            {u.fullName}
-                        </div>
-                        <img className={s.avatar} src={u.userPhoto} />
-                        <div className={s.button}>
-                            {u.followed
-                                ? <button onClick={() => props.unfollow(u.id)}>FOLLOW</button>
-                                : <button onClick={() => props.follow(u.id)}>UNFOLLOW</button>}
-
-                        </div>
-                    </div>
-                    <div className={s.userInfo}>
-
-                        <div>
-                            My status:
-                            {`\t ${u.status}`}
-                        </div>
-                        <div className={s.userLocation}>
                             <div>
-                                City:
-                                {u.location.cityName}
+                                {u.name}
                             </div>
-                            <div>
-                                Country:
-                                {u.location.countryName}
+                            <img className={s.avatar} src={u.photos.small !== null ? u.photos.small : userPhoto}/>
+                            <div className={s.button}>
+                                {u.followed
+                                    ? <button onClick={() => this.props.unfollow(u.id)}>FOLLOW</button>
+                                    : <button onClick={() => this.props.follow(u.id)}>UNFOLLOW</button>}
+
                             </div>
-
-
                         </div>
-                    </div>
+                        <div className={s.userInfo}>
 
-                </div>)
-            }
-        </div>
-    )
+                            <div>
+                                My status:
+                                {`\t ${u.status}`}
+                            </div>
+                            <div className={s.userLocation}>
+                                <div>
+                                    City:
+                                    {'u.location.cityName'}
+                                </div>
+                                <div>
+                                    Country:
+                                    {'u.location.countryName'}
+                                </div>
+
+
+                            </div>
+                        </div>
+
+                    </div>)
+                }
+            </div>
+        )
+    }
 }
+
+export default Users
