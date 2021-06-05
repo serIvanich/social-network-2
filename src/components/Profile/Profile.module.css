@@ -1,9 +1,30 @@
 
-.profile img {
+.profileInfo {
     height: 150px;
     width: 100%;
+    display: flex;
+    flex-direction: row;
+
+    padding: 5px;
+
 }
 
-.profileInfo img{
-width: 200px
+
+.profileInfo img {
+
+    width: 150px;
+    height: 150px;
+    border-radius: 7px;
+}
+
+.infoBlock {
+    height: 100%;
+    width: 80%;
+    padding-left: 10px;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: space-evenly;
+    background-color: whitesmoke;
+
 }

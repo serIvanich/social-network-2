@@ -12,9 +12,17 @@ export const ProfileInfo: React.FC<ProfileInfoPropsType> = React.memo(({profile}
    if (!profile) {return <Preloader/>}
     return (
         <div className={s.profileInfo}>
-            {profile.fullName}
-            <img src={profile.photos.large}/>
-            <div>
+            <div className={s.imgBlock}>
+
+                <img src={profile.photos.large}/>
+
+            </div>
+
+            <div className={s.infoBlock}>
+                <h3>{profile.fullName}</h3>
+                <div>{profile.lookingForAJobDescription}</div>
+                <div>status</div>
+
                 ava and my profile
             </div>
 
