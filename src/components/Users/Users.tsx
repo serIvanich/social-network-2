@@ -3,7 +3,8 @@ import {UserType} from "../../redux/users-reducer"
 import s from './Users.module.css'
 import userPhoto from './../../assets/images/users2.jpg'
 import {Preloader} from "../common/Preloader";
-import { NavLink } from 'react-router-dom';
+import {NavLink} from 'react-router-dom';
+import axios from "axios";
 
 type UsersPropsType = {
     users: Array<UserType>
@@ -11,11 +12,13 @@ type UsersPropsType = {
     totalUsersCount: number
     currentPage: number
     isFetching: boolean
+    followingInProgress: Array<number>
     follow: (userId: number) => void
     unfollow: (userId: number) => void
     changeCurrentPage: (currentPage: number) => void
+    getFollowCallback: (userId: number) => void
+    getUnfollowCallback: (userId: number) => void
 }
-
 
 type ResponseType = {
     items: UserType []
@@ -39,7 +42,7 @@ const Users: React.FC<UsersPropsType> = (props) => {
 
         <div>
 
-                {props.isFetching && <Preloader />}
+            {props.isFetching && <Preloader/>}
 
 
             <div>
@@ -62,8 +65,12 @@ const Users: React.FC<UsersPropsType> = (props) => {
 
                         <div className={s.button}>
                             {u.followed
-                                ? <button onClick={() => props.unfollow(u.id)}>FOLLOW</button>
-                                : <button onClick={() => props.follow(u.id)}>UNFOLLOW</button>}
+                                ? <button disabled={props.followingInProgress.some(id => id === u.id)} onClick={() => props.getUnfollowCallback(u.id)
+                                }>UNFOLLOW</button>
+
+                                : <button disabled={props.followingInProgress.some(id => id === u.id)} onClick={() => props.getFollowCallback(u.id)
+                                }>FOLLOW</button>
+                            }
 
                         </div>
                     </div>
