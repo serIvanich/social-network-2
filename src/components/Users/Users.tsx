@@ -13,8 +13,6 @@ type UsersPropsType = {
     currentPage: number
     isFetching: boolean
     followingInProgress: Array<number>
-    follow: (userId: number) => void
-    unfollow: (userId: number) => void
     changeCurrentPage: (currentPage: number) => void
     getFollowCallback: (userId: number) => void
     getUnfollowCallback: (userId: number) => void

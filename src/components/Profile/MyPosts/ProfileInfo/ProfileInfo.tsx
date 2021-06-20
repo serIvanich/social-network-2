@@ -2,6 +2,8 @@ import React from 'react'
 import s from './../../Profile.module.css'
 import {UserProfileInfoType} from "../../../../redux/profile-reducer";
 import {Preloader} from "../../../common/Preloader";
+import avatarka from '../../../../assets/images/avatarka.png'
+
 
 type ProfileInfoPropsType = {
 
@@ -13,8 +15,9 @@ export const ProfileInfo: React.FC<ProfileInfoPropsType> = React.memo(({profile}
     return (
         <div className={s.profileInfo}>
             <div className={s.imgBlock}>
+                {profile.photos.large? <img src={profile.photos.large}/>
+                : <img src={avatarka}/>}
 
-                <img src={profile.photos.large}/>
 
             </div>
 
