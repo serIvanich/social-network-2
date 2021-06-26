@@ -33,13 +33,11 @@ class ProfileContainer extends React.Component<ProfileContainerPropsType> {
 }
 
 type MapStateToPropsType = {
-profile: UserProfileInfoType | null
-    isAuth: boolean
+    profile: UserProfileInfoType | null
 }
 const MapStateToProps = (state: AppStateType): MapStateToPropsType => {
-    return   {
+    return {
         profile: state.profilePage.profile,
-        isAuth: state.auth.isAuth,
     }
 }
 
@@ -57,7 +55,7 @@ type MapDispatchToPropsType = {
 
 export default compose<ComponentType>(
     connect<MapStateToPropsType, MapDispatchToPropsType, {}, AppStateType>(
-        MapStateToProps, { getUserProfile}),
+        MapStateToProps, {getUserProfile}),
     withRouter,
     withAuthRedirect
 )
