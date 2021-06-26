@@ -2,7 +2,7 @@ import React from 'react'
 import {UserType} from "../../redux/users-reducer"
 import s from './Users.module.css'
 import userPhoto from './../../assets/images/users2.jpg'
-import {Preloader} from "../common/Preloader";
+import {Preloader} from "../common/Preloader/Preloader";
 import {NavLink} from 'react-router-dom';
 import axios from "axios";
 

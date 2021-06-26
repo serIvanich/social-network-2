@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {ComponentType} from 'react'
 import {
     follow,
     followSuccess,
@@ -16,15 +16,13 @@ import {
 import {AppStateType} from "../../redux/store";
 import {connect} from "react-redux";
 import Users from "./Users";
+import {compose} from "redux";
+import {withAuthRedirect} from "../../hoc/withAuthRedirect";
 
 type UsersContainerPropsType = MapStateToPropsType & MapDispatchToPropsType
 
 
-type ResponseType = {
-    items: UserType []
-    totalCount: number
-    error: string
-}
+
 
 class UsersContainer extends React.Component<UsersContainerPropsType, UserType[]> {
 
@@ -98,7 +96,15 @@ type MapDispatchToPropsType = {
 }
 
 
-export default connect<MapStateToPropsType, MapDispatchToPropsType, {}, AppStateType>(
+// export default connect<MapStateToPropsType, MapDispatchToPropsType, {}, AppStateType>(
+//     MapStateToProps, { getUsers,follow,unfollow,
+//         setCurrentPage, setTotalUsersCount, toggleFollowingProgress
+//     })(UsersContainer)
+
+export default compose<ComponentType>(
+    connect<MapStateToPropsType, MapDispatchToPropsType, {}, AppStateType>(
     MapStateToProps, { getUsers,follow,unfollow,
-        setCurrentPage, setTotalUsersCount, toggleFollowingProgress
-    })(UsersContainer)
+        setCurrentPage, setTotalUsersCount, toggleFollowingProgress}),
+    withAuthRedirect
+)
+    (UsersContainer)
