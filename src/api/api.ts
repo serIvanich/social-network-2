@@ -11,10 +11,10 @@ const instance = axios.create(
         }
     }
 )
- type ResponseType<T = {}> = {
-     data: T
-     resultCode: 0 | 1 | 10
-     messages: Array<string>
+type ResponseType<T = {}> = {
+    data: T
+    resultCode: 0 | 1 | 10
+    messages: Array<string>
 }
 type UsersResponseType = {
     items: Array<UserType>
@@ -48,8 +48,20 @@ export const authApi = {
 }
 
 export const profileApi = {
-    getUserProfile(userId: number ) {
+    getUserProfile(userId: number) {
         return instance.get<UserProfileInfoType>(`profile/` + userId)
+            .then(response => response.data)
+    },
+    getUserStatus(userId: number) {
+
+        let pr = instance.get<string>(`profile/status/${userId}`)
+            .then(res => res.data)
+        return pr
+
+    },
+    changeUserStatus(status: string) {
+
+        return instance.put<ResponseType>(`profile/status/`, {status})
             .then(response => response.data)
     }
 }
