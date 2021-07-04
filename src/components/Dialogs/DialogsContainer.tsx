@@ -2,8 +2,7 @@ import React, {ComponentType} from 'react'
 import {
     addDialogsTextActionCreate,
     DialogItemType,
-    DialogsTextsType,
-    updateDialogsMessageActionCreate
+    DialogsTextsType
 } from "../../redux/dialogs-reducer";
 
 import {Dialogs} from "./Dialogs";
@@ -26,18 +25,13 @@ const MapStateToProps = (state: AppStateType): MapStateToPropsType => {
 }
 
 type MapDispatchToPropsType = {
-    addMessage: () => void
-    onChangeMessage: (text: string) => void
+    addMessage: (text: string) => void
 }
 const MapDispatchToProps = (dispatch: any): MapDispatchToPropsType => {
 
     return {
-        addMessage: () => {
-            dispatch(addDialogsTextActionCreate())
-        },
-
-        onChangeMessage: (text: string) => {
-            dispatch(updateDialogsMessageActionCreate(text))
+        addMessage: (text: string) => {
+            dispatch(addDialogsTextActionCreate(text))
         }
 
     }

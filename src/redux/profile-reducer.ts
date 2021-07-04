@@ -1,11 +1,9 @@
 import {ThunkAction} from "redux-thunk";
 import {AppStateType} from "./store";
 import {profileApi} from "../api/api";
-import {log} from "util";
 
 
 export const ADD_POST = 'ADD-POST'
-export const CHANGE_TEXT_MESSAGE = 'CHANGE-TEXT-MESSAGE'
 export const SET_USER_PROFILE = 'SET-USER-PROFILE'
 const GET_USER_PROFILE_STATUS = 'GET-USER-PROFILE-STATUS'
 const CHANGE_USER_PROFILE_STATUS = 'CHANGE-USER-PROFILE-STATUS'
@@ -51,7 +49,6 @@ export type UserProfileInfoType = {
 }
 
 export type ProfileActionType = AddPostType
-    | ChangeTextMessageType
     | SetUsersProfileInfoType
     | GetUserStatusType
 
@@ -87,7 +84,7 @@ export const profileReducer = (state: ProfilePageType = initialState, action: Pr
 
             const newPost = {
                 id: 4,
-                message: state.textMessage,
+                message: action.text,
                 likesCount: 19
             }
 
@@ -95,11 +92,6 @@ export const profileReducer = (state: ProfilePageType = initialState, action: Pr
             state.textMessage = ''
             return state
 
-
-        case (CHANGE_TEXT_MESSAGE):
-
-            state = {...state, textMessage: action.text}
-            return state
         case "SET-USER-PROFILE":
             return {
                 ...state,
@@ -116,20 +108,12 @@ export const profileReducer = (state: ProfilePageType = initialState, action: Pr
     }
 }
 
-type AddPostType = { type: typeof ADD_POST }
-export const addPost = (): AddPostType => ({
-    type: ADD_POST
+type AddPostType = { type: typeof ADD_POST, text: string }
+export const addPost = (text: string): AddPostType => ({
+    type: ADD_POST,
+    text
 })
 
-type ChangeTextMessageType = {
-    type: typeof CHANGE_TEXT_MESSAGE
-    text: string
-
-}
-export const changeTextMessage = (text: string): ChangeTextMessageType => ({
-    type: CHANGE_TEXT_MESSAGE,
-    text: text
-})
 
 type SetUsersProfileInfoType = {
     type: typeof SET_USER_PROFILE

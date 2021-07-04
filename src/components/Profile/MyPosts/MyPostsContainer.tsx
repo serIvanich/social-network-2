@@ -1,9 +1,9 @@
 import React from "react";
-import s from './MyPosts.module.css'
-import {addPost, changeTextMessage, MessageType} from "../../../redux/profile-reducer";
+import {addPost, MessageType} from "../../../redux/profile-reducer";
 import {MyPosts} from "./MyPosts";
 import {AppStateType} from "../../../redux/store";
 import {connect} from "react-redux";
+import {Dispatch} from "redux";
 
 
 type MapStateToPropsType = {
@@ -20,20 +20,16 @@ const MapStateToProps = (state: AppStateType): MapStateToPropsType => {
 }
 
 type MapDispatchToPropsType = {
-    addPost: () => void
-    onChangeText: (text: string) => void
-    }
-const MapDispatchToProps = (dispatch: any): MapDispatchToPropsType => {
+    addPost: (text: string) => void
+}
+const MapDispatchToProps = (dispatch: Dispatch): MapDispatchToPropsType => {
     return {
-    addPost: () => {
-        dispatch(addPost())
-    },
-    onChangeText: (text: string) => {
-        dispatch(changeTextMessage(text))
+    addPost: (text: string) => {
+        dispatch(addPost(text))
     }
-}
-}
 
+}
+}
 
 
 export const MyPostsContainer = connect<MapStateToPropsType,MapDispatchToPropsType,{}, AppStateType>(

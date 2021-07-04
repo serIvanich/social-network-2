@@ -1,5 +1,5 @@
 export const ADD_DIALOGS_TEXT = 'ADD-DIALOGS-TEXT'
-export const UPDATE_DIALOGS_TEXT = 'UPDATE-DIALOGS-TEXT'
+// export const UPDATE_DIALOGS_TEXT = 'UPDATE-DIALOGS-TEXT'
 
 
 export type DialogItemType = {
@@ -18,7 +18,7 @@ export type DialogsPageType = {
 }
 
 
-export type DialogsActionType = AddDialogsTextActionCreate | UpdateDialogsMessageActionCreate
+export type DialogsActionType = AddDialogsTextActionCreate
 
 
 const initialState: DialogsPageType = {
@@ -42,33 +42,34 @@ export const dialogsReducer = (state: DialogsPageType = initialState, action: Di
 
             const newText = {
                 id: 13,
-                message: state.newMessage
+                message: action.text
             }
             state = {...state, dialogTexts:[...state.dialogTexts, newText]}
             state.newMessage = ''
             return state
-        case (UPDATE_DIALOGS_TEXT):
-
-            state = {...state, newMessage: action.text}
-            return state
+        // case (UPDATE_DIALOGS_TEXT):
+        //
+        //     state = {...state, newMessage: action.text}
+        //     return state
         default:
             return state
     }
 }
 
-type AddDialogsTextActionCreate = {type: typeof ADD_DIALOGS_TEXT}
-export const addDialogsTextActionCreate = (): AddDialogsTextActionCreate => ({
-    type: ADD_DIALOGS_TEXT
+type AddDialogsTextActionCreate = {type: typeof ADD_DIALOGS_TEXT, text: string}
+export const addDialogsTextActionCreate = (text: string): AddDialogsTextActionCreate => ({
+    type: ADD_DIALOGS_TEXT,
+    text
 })
 
-type UpdateDialogsMessageActionCreate = {
-    type: typeof  UPDATE_DIALOGS_TEXT,
-    text: string
-
-}
-export const updateDialogsMessageActionCreate = (text: string ): UpdateDialogsMessageActionCreate => ({
-    type: UPDATE_DIALOGS_TEXT,
-    text: text
-})
+// type UpdateDialogsMessageActionCreate = {
+//     type: typeof  UPDATE_DIALOGS_TEXT,
+//     text: string
+//
+// }
+// export const updateDialogsMessageActionCreate = (text: string ): UpdateDialogsMessageActionCreate => ({
+//     type: UPDATE_DIALOGS_TEXT,
+//     text: text
+// })
 
 
