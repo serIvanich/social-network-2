@@ -1,6 +1,7 @@
 import {authApi} from "../api/api";
 import {ThunkAction} from "redux-thunk";
 import {AppStateType} from "./store";
+import {stopSubmit} from "redux-form";
 
 const SET_AUTH_USER_DATA = 'SET-AUTH-USER-DATA'
 
@@ -63,6 +64,10 @@ export const login = (email: string, password: string, rememberMe: boolean): Thu
         .then(data => {
             if (data.resultCode === 0) {
                 dispatch(getAuthUserData())
+            }else {
+                const message = data.messages.length > 0 ? data.messages[0] : 'Some error'
+                //@ts-ignore
+                dispatch(stopSubmit('login', {_error: message}))
             }
         })
 }
