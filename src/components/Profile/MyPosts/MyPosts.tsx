@@ -1,8 +1,10 @@
-import React, {ChangeEvent} from "react";
+import React from "react";
 import s from './MyPosts.module.css'
 import {Post} from "./MyPosts/Post"
 import {MessageType} from "../../../redux/profile-reducer";
 import {Field, InjectedFormProps, reduxForm} from "redux-form";
+import {required} from "../../../utils/validators/validators";
+import AddMessageForm, {PostFormDataType} from "./AddMessageForm/ProfileAddMessageForm";
 
 
 type MyPostPropsType = {
@@ -22,13 +24,13 @@ export const MyPosts: React.FC<MyPostPropsType> = React.memo(({
     })
 
 
-    const addNewPost = (formData: FormDataType) => {
+    const addNewPost = (formData: PostFormDataType) => {
         addPost(formData.myNewPost)
     }
       return (
         <div className={s.myPost}>
             <div className={s.messageForm}>
-                <AddMessageReduxForm onSubmit={addNewPost}/>
+                <AddMessageForm onSubmit={addNewPost}/>
              </div>
             {postsMessages}
 
@@ -36,23 +38,5 @@ export const MyPosts: React.FC<MyPostPropsType> = React.memo(({
     )
 })
 
-type FormDataType = {
-    myNewPost: string
-}
-const AddMessageForm: React.FC<InjectedFormProps<FormDataType>> = (props) => {
 
-    return (
-        <form onSubmit={props.handleSubmit}>
-            <div>
-                <Field name={'myNewPost'} placeholder={'enter post'} component={'textarea'} />
 
-            </div>
-            <div>
-                <button>add post</button>
-            </div>
-
-        </form>
-    )
-}
-
-const AddMessageReduxForm = reduxForm<FormDataType>({form: 'ProfileMyPost'}) (AddMessageForm)

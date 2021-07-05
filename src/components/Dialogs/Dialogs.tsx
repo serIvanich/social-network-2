@@ -2,7 +2,7 @@ import React from 'react'
 import {NavLink} from 'react-router-dom'
 import s from './Dialogs.module.css'
 import {DialogItemType, DialogsTextsType} from "../../redux/dialogs-reducer";
-import {Field, InjectedFormProps, reduxForm} from "redux-form";
+import DialogsAddMessageForm, {DialogsFormDataType} from "./DialogsAddMessageForm/DialogsAddMessageForm";
 
 
 type DialogsItemPropsType = {
@@ -40,7 +40,7 @@ export const Dialogs: React.FC<DialogsPropsType> = React.memo((props) => {
     const dialogsItems = props.dialogItems.map(d => <DialogItem key={d.id} id={d.id} name={d.name}/>)
     const dialogsTexts = props.dialogTexts.map((t, i) => <Message key={i} message={t.message}/>)
 
-    const addMessage = (formData: FormDataType) => {
+    const addMessage = (formData: DialogsFormDataType) => {
         console.log(formData.newMessage)
         props.addMessage(formData.newMessage)
     }
@@ -53,7 +53,7 @@ export const Dialogs: React.FC<DialogsPropsType> = React.memo((props) => {
             <div className={s.messages}>
                 {dialogsTexts}
 
-                <AddMessageReduxForm onSubmit={addMessage}/>
+                <DialogsAddMessageForm onSubmit={addMessage}/>
 
             </div>
 
@@ -61,21 +61,3 @@ export const Dialogs: React.FC<DialogsPropsType> = React.memo((props) => {
     )
 })
 
-type FormDataType = {
-    newMessage: string
-}
-const AddMessageForm: React.FC<InjectedFormProps<FormDataType>> = (props) => {
-
-    return (
-        <form onSubmit={props.handleSubmit}>
-            <div className={s.textarea}>
-
-                <Field name={'newMessage'} component={'textarea'} placeholder={'Enter your messages'}/>
-
-            </div>
-            <button>add message</button>
-        </form>
-    )
-}
-
-const AddMessageReduxForm = reduxForm<FormDataType>({form: 'Dialogs'})(AddMessageForm)
