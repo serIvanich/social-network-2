@@ -14,7 +14,7 @@ import {withAuthRedirect} from "../../hoc/withAuthRedirect";
 import {compose} from "redux";
 
 type PropsType = {
-    userId: string | undefined
+   userId: string | undefined
 }
 
 type ProfileContainerPropsType = MapStateToPropsType & MapDispatchToPropsType & RouteComponentProps<PropsType>
@@ -25,8 +25,8 @@ class ProfileContainer extends React.Component<ProfileContainerPropsType> {
 
         let userId = Number(this.props.match.params.userId)
 
-        if (!userId) {
-            userId = 2
+        if (!userId && this.props.userId) {
+            userId = this.props.userId
         }
         this.props.getUserProfile(userId)
         this.props.getUserProfileStatus(userId)
@@ -44,11 +44,13 @@ class ProfileContainer extends React.Component<ProfileContainerPropsType> {
 type MapStateToPropsType = {
     profile: UserProfileInfoType | null
     status: string
+    userId: number | null
 }
 const MapStateToProps = (state: AppStateType): MapStateToPropsType => {
     return {
         profile: state.profilePage.profile,
         status: state.profilePage.status,
+        userId: state.auth.userId
     }
 }
 

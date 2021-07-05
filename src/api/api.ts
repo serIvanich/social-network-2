@@ -39,17 +39,16 @@ export const usersApi = {
 
 export const authApi = {
     me() {
-
         return instance.get<ResponseType<{
             id: number, email: string, login: string
         }>>(`auth/me`)
             .then(response => response.data)
     },
-    setLogin(payload: any) {
-        return instance.post<ResponseType<{userId: number}>>(`auth/login`, {...payload})
+    login(email: string, password: string, rememberMe: boolean) {
+        return instance.post<ResponseType<{userId: number}>>(`auth/login`, {email, password, rememberMe})
             .then(res => res.data)
     },
-    deleteLogin() {
+    logout() {
         return instance.delete<ResponseType>(`auth/login`)
             .then(res => res.data)
     }
@@ -61,14 +60,11 @@ export const profileApi = {
             .then(response => response.data)
     },
     getUserStatus(userId: number) {
-
         let pr = instance.get<string>(`profile/status/${userId}`)
             .then(res => res.data)
         return pr
-
     },
     changeUserStatus(status: string) {
-
         return instance.put<ResponseType>(`profile/status/`, {status})
             .then(response => response.data)
     }
