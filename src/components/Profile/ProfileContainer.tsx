@@ -27,7 +27,11 @@ class ProfileContainer extends React.Component<ProfileContainerPropsType> {
 
         if (!userId && this.props.userId) {
             userId = this.props.userId
+            // if(!userId) {
+            //     this.props.history.push('/login')
+            // }
         }
+debugger
         this.props.getUserProfile(userId)
         this.props.getUserProfileStatus(userId)
 
@@ -70,7 +74,6 @@ type MapDispatchToPropsType = {
 export default compose<ComponentType>(
     connect<MapStateToPropsType, MapDispatchToPropsType, {}, AppStateType>(
         MapStateToProps, {getUserProfile, getUserProfileStatus, changeUserProfileStatus}),
-    withRouter,
-    withAuthRedirect
+    withRouter
 )
 (ProfileContainer)
