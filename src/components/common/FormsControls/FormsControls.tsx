@@ -2,15 +2,15 @@ import { WrappedFieldProps } from 'redux-form'
 import s from './FormsControls.module.css'
 
 
-const FormControl: React.FC<WrappedFieldProps> = (props) => {
+const FormControl: React.FC<WrappedFieldProps> = ({meta: {error, touched}, children}) => {
 
-    const hasError = props.meta.error && props.meta.touched
+    const hasError = error && touched
     return (
         <div className={s.formControl + ' ' + (hasError ? s.error : '')}>
             <div>
-                {props.children}
+                {children}
             </div>
-            {hasError && <span>{props.meta.error}</span>}
+            {hasError && <span>{error}</span>}
         </div>
     )
 
@@ -30,3 +30,4 @@ export const Input: React.FC<WrappedFieldProps> = (props) => {
 
     )
 }
+

@@ -37,7 +37,6 @@ export const authReducer = (state: AuthDataType = initialState, action: ActionTy
 }
 
 
-
 const setAuthUserData = (userId: number | null, email: string | null, login: string | null, isAuth: boolean) => ({
     type: SET_AUTH_USER_DATA,
     payload: {userId, email, login, isAuth}
@@ -45,38 +44,39 @@ const setAuthUserData = (userId: number | null, email: string | null, login: str
 type SetAuthUserDataType = ReturnType<typeof setAuthUserData>
 
 type ThunkType = ThunkAction<void, AppStateType, undefined, ActionType>
-export const getAuthUserData = (): ThunkType => (dispatch) => {
-
-    authApi.me()
-        .then(data => {
-
-            if (data.resultCode === 0) {
-                const {id, email, login} = data.data
-                dispatch(setAuthUserData(id, email, login, true))
-            }
-
-        })
+export const getAuthUserData = (): ThunkType => async (dispatch) => {
+    try {
+        const data = await authApi.me()
+        if (data.resultCode === 0) {
+            const {id, email, login} = data.data
+            dispatch(setAuthUserData(id, email, login, true))
+        }
+    } catch (e) {
+        console.log(e)
+    }
 }
 
-export const login = (email: string, password: string, rememberMe: boolean): ThunkType => (dispatch) => {
-
-    authApi.login(email, password, rememberMe)
-        .then(data => {
-            if (data.resultCode === 0) {
-                dispatch(getAuthUserData())
-            }else {
-                const message = data.messages.length > 0 ? data.messages[0] : 'Some error'
-                //@ts-ignore
-                dispatch(stopSubmit('login', {_error: message}))
-            }
-        })
+export const login = (email: string, password: string, rememberMe: boolean): ThunkType => async (dispatch) => {
+    try {
+        const data = await authApi.login(email, password, rememberMe)
+        if (data.resultCode === 0) {
+            dispatch(getAuthUserData())
+        } else {
+            const message = data.messages.length > 0 ? data.messages[0] : 'Some error'
+            //@ts-ignore
+            dispatch(stopSubmit('login', {_error: message}))
+        }
+    } catch (e) {
+        console.log(e)
+    }
 }
-export const logout = (): ThunkType => (dispatch) => {
-
-    authApi.logout()
-        .then(data => {
-            if (data.resultCode === 0) {
-                dispatch(setAuthUserData(null, null, null, false))
-            }
-        })
+export const logout = (): ThunkType => async (dispatch) => {
+    try {
+        const data = await authApi.logout()
+        if (data.resultCode === 0) {
+            dispatch(setAuthUserData(null, null, null, false))
+        }
+    } catch (e) {
+        console.log(e)
+    }
 }

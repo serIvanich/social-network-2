@@ -34,7 +34,7 @@ type SetAppInitializeType = ReturnType<typeof setAppInitialize>
 
 type ThunkType = ThunkAction<void, AppStateType, undefined, ActionType>
 export const getAppInitialized = (): ThunkType =>  (dispatch) => {
-debugger
+
     const pr = dispatch(getAuthUserData())
     Promise.all([pr])
         .then(() => {

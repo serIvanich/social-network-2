@@ -145,28 +145,35 @@ export const getUserStatus = (status: string): GetUserStatusType => ({
 })
 
 type ThunkType = ThunkAction<void, AppStateType, undefined, ProfileActionType>
-export const getUserProfile = (userId: number): ThunkType => (dispatch) => {
+export const getUserProfile = (userId: number): ThunkType => async (dispatch) => {
 
-    profileApi.getUserProfile(userId)
-        .then(data => {
-
+    const data = await profileApi.getUserProfile(userId)
+        try {
             dispatch(setUserProfileInfo(data))
-
-        })
+        }
+        catch (e){
+            console.log(e)
+        }
 }
 
-export const getUserProfileStatus = (userId: number): ThunkType => (dispatch) => {
-    profileApi.getUserStatus(userId)
-        .then(data => {
+export const getUserProfileStatus = (userId: number): ThunkType => async (dispatch) => {
+    const data = await profileApi.getUserStatus(userId)
+    try {
+        dispatch(getUserStatus(data))
+    }
+    catch (e){
+        console.log(e)
+    }
 
-            dispatch(getUserStatus(data))
-        })
 }
-export const changeUserProfileStatus = (status: string): ThunkType => (dispatch) => {
-    profileApi.changeUserStatus(status)
-        .then(data => {
-            if (data.resultCode === 0) {
-                dispatch(getUserStatus(status))
-            }
-        })
+export const changeUserProfileStatus = (status: string): ThunkType => async (dispatch) => {
+    const data = await profileApi.changeUserStatus(status)
+    try {
+        if (data.resultCode === 0) {
+            dispatch(getUserStatus(status))
+        }
+    }
+    catch (e){
+        console.log(e)
+    }
 }
