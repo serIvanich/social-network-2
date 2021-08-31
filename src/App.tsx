@@ -1,7 +1,7 @@
 import React, {ComponentType} from 'react';
 import './App.css';
 import {Navbar} from "./components/Navbar/Navbar";
-import {Route, withRouter} from 'react-router-dom';
+import {BrowserRouter, Route, withRouter} from 'react-router-dom';
 import {Music} from './components/Music/Music';
 import {News} from "./components/News/News";
 import DialogsContainer from './components/Dialogs/DialogsContainer';
@@ -10,8 +10,8 @@ import ProfileContainer from "./components/Profile/ProfileContainer";
 import HeaderContainer from "./components/Header/HeaderContainer";
 import Login from "./components/Login/Login";
 import {getAppInitialized} from "./redux/app-reducer";
-import {connect} from "react-redux";
-import {AppStateType} from "./redux/store";
+import {connect, Provider} from "react-redux";
+import store, {AppStateType} from "./redux/store";
 import {compose} from "redux";
 import {Preloader} from "./components/common/Preloader/Preloader";
 
@@ -21,14 +21,14 @@ type AppPropsType = {
 }
 
 
- class App extends React.Component<AppPropsType> {
+class App extends React.Component<AppPropsType> {
     componentDidMount() {
         this.props.getAppInitialized()
     }
 
     render() {
         if (!this.props.initialize) {
-            return <Preloader />
+            return <Preloader/>
         }
 
         return (
@@ -61,9 +61,21 @@ const MapStateToProps = (state: AppStateType): MapStateToPropsType => {
 type MapDispatchToPropsType = {
     getAppInitialized: () => void
 }
-export default compose<ComponentType>(
+const AppContainer = compose<ComponentType>(
     withRouter,
     connect<MapStateToPropsType, MapDispatchToPropsType, {}, AppStateType>
     (MapStateToProps, {getAppInitialized})
 )
 (App)
+
+const SamuraiJsApp = () => {
+
+    return <BrowserRouter>
+        <Provider store={store}>
+            <AppContainer/>
+        </Provider>
+
+    </BrowserRouter>
+}
+
+export default SamuraiJsApp
