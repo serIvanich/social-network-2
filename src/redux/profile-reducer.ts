@@ -8,6 +8,7 @@ export const DELETE_POST = 'DELETE-POST'
 export const SET_USER_PROFILE = 'SET-USER-PROFILE'
 const GET_USER_PROFILE_STATUS = 'GET-USER-PROFILE-STATUS'
 const CHANGE_USER_PROFILE_STATUS = 'CHANGE-USER-PROFILE-STATUS'
+const SAVE_PHOTO_SUCCESS = 'SAVE_PHOTO_SUCCESS'
 
 export type MessageType = {
     id: number
@@ -42,10 +43,10 @@ export type ProfilePageType = {
 
 export type UserProfileInfoType = {
     userId: number
-    lookingForAJob: boolean
-    lookingForAJobDescription: string
-    fullName: string
-    contacts: ContactsType
+    lookingForAJob?: boolean
+    lookingForAJobDescription?: string
+    fullName?: string
+    contacts?: ContactsType
     photos: PhotosType
 }
 
@@ -53,6 +54,7 @@ export type ProfileActionType = AddPostType
     | SetUsersProfileInfoType
     | GetUserStatusType
     | DeletePostType
+    | ReturnType<typeof savePhotoSuccess>
 
 
 const initialState: ProfilePageType = {
@@ -106,6 +108,15 @@ export const profileReducer = (state: ProfilePageType = initialState, action: Pr
             }
         case "DELETE-POST":
             return {...state, posts: state.posts.filter(p => p.id !== action.postId)}
+
+        case "SAVE_PHOTO_SUCCESS":
+            debugger
+            return {
+                ...state,
+                //@ts-ignore
+               profile: {...state.profile, photos: action.photos}
+            }
+
         default:
             return state
 
@@ -144,24 +155,24 @@ export const getUserStatus = (status: string): GetUserStatusType => ({
     status
 })
 
+export const savePhotoSuccess = (photos: PhotosType) => ({type: SAVE_PHOTO_SUCCESS, photos} as const)
+
 type ThunkType = ThunkAction<void, AppStateType, undefined, ProfileActionType>
 export const getUserProfile = (userId: number): ThunkType => async (dispatch) => {
 
     const data = await profileApi.getUserProfile(userId)
-        try {
-            dispatch(setUserProfileInfo(data))
-        }
-        catch (e){
-            console.log(e)
-        }
+    try {
+        dispatch(setUserProfileInfo(data))
+    } catch (e) {
+        console.log(e)
+    }
 }
 
 export const getUserProfileStatus = (userId: number): ThunkType => async (dispatch) => {
     const data = await profileApi.getUserStatus(userId)
     try {
         dispatch(getUserStatus(data))
-    }
-    catch (e){
+    } catch (e) {
         console.log(e)
     }
 
@@ -172,8 +183,17 @@ export const changeUserProfileStatus = (status: string): ThunkType => async (dis
         if (data.resultCode === 0) {
             dispatch(getUserStatus(status))
         }
+    } catch (e) {
+        console.log(e)
     }
-    catch (e){
+}
+export const savePhoto = (file: any): ThunkType => async (dispatch) => {
+    const data = await profileApi.savePhoto(file)
+    try {
+        if (data.resultCode === 0) {
+            dispatch(savePhotoSuccess(data.data.photos))
+        }
+    } catch (e) {
         console.log(e)
     }
 }
