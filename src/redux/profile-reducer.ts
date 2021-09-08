@@ -21,7 +21,7 @@ type PhotosType = {
     large: string
 }
 
-type ContactsType = {
+export type ContactsType = {
     github: string
     vk: string
     facebook: string
@@ -43,10 +43,11 @@ export type ProfilePageType = {
 
 export type UserProfileInfoType = {
     userId: number
+    aboutMe?: string
     lookingForAJob?: boolean
     lookingForAJobDescription?: string
     fullName?: string
-    contacts?: ContactsType
+    contacts: ContactsType
     photos: PhotosType
 }
 

@@ -1,17 +1,17 @@
 
 .profileInfo {
-    height: 150px;
+    /*height: 150px;*/
     width: 100%;
     display: flex;
     flex-direction: row;
-
+    background-color: whitesmoke;
     padding: 5px;
 
 }
 
 
 .profileInfo img {
-
+;
     width: 150px;
     height: 150px;
     border-radius: 7px;
@@ -23,8 +23,17 @@
     padding-left: 10px;
     display: flex;
     flex-direction: column;
-    align-content: center;
-    justify-content: space-evenly;
-    background-color: whitesmoke;
+    /*align-content: center;*/
+    /*justify-content: center;*/
+
+
+}
+
+.infoBlockContacts {
+    border: 2px solid yellowgreen;
+    display: inline-flex;
+    flex-direction: column;
+    width: 40%;
+    background-color: #e7fdd8;
 
 }
