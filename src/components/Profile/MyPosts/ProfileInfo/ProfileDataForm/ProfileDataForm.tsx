@@ -33,7 +33,7 @@ const profile = useSelector<AppStateType, UserProfileInfoType | null>(state => s
 
             <h3>{'name'}</h3>
             <div>
-                <b>About me: </b>{<Field placeholder={'aboutMe'} name={'aboutMe'} component={Input}
+                <b>About me: </b>{<Field value={'aboutMe'} name={'aboutMe'} component={Input}
                                           validate={[maxLength30]}/>}
             </div>
 
