@@ -1,6 +1,8 @@
 import {ThunkAction} from "redux-thunk";
 import {AppStateType} from "./store";
-import {profileApi} from "../api/api";
+import {profileApi, SaveProfileType} from "../api/api";
+import {stopSubmit} from "redux-form";
+//import {ProfileDataFormType} from "../components/Profile/MyPosts/ProfileInfo/ProfileDataForm/ProfileDataForm";
 
 
 export const ADD_POST = 'ADD-POST'
@@ -159,6 +161,7 @@ export const getUserStatus = (status: string): GetUserStatusType => ({
 export const savePhotoSuccess = (photos: PhotosType) => ({type: SAVE_PHOTO_SUCCESS, photos} as const)
 
 type ThunkType = ThunkAction<void, AppStateType, undefined, ProfileActionType>
+
 export const getUserProfile = (userId: number): ThunkType => async (dispatch) => {
 
     const data = await profileApi.getUserProfile(userId)
@@ -198,3 +201,22 @@ export const savePhoto = (file: any): ThunkType => async (dispatch) => {
         console.log(e)
     }
 }
+
+export const saveProfile = (payload: SaveProfileType): ThunkType =>  async (dispatch, getState) => {
+    const data = await profileApi.saveProfile(payload)
+
+    if (data.resultCode === 0) {
+        dispatch(getUserProfile(payload.userId))
+    } else {
+
+        const message = data.messages.length > 0 ? data.messages[0] : 'Some error'
+        // const contacts = data.messages[0].match(/\w+/g)
+
+
+        //@ts-ignore
+        dispatch(stopSubmit('edit-profile', {_error: message}))
+        return Promise.reject(message)
+    }
+}
+
+

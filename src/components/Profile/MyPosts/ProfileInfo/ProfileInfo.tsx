@@ -4,7 +4,7 @@ import {UserProfileInfoType} from "../../../../redux/profile-reducer";
 import {Preloader} from "../../../common/Preloader/Preloader";
 import avatar from '../../../../assets/images/avatarka.png'
 import ProfileStatus from "./ProfileStatusWithHooks";
-import ProfileDataForm, {ProfileDataFormType} from "./ProfileDataForm/ProfileDataForm";
+import ProfileDataForm from "./ProfileDataForm/ProfileDataForm";
 
 
 type ProfileInfoPropsType = {
@@ -14,14 +14,35 @@ type ProfileInfoPropsType = {
     changeUserProfileStatus: (status: string) => void
     isOwner: boolean
     savePhoto: Function
+    saveProfile: Function
 }
 
 export const ProfileInfo: React.FC<ProfileInfoPropsType> = React.memo((
-    {profile, status, changeUserProfileStatus, isOwner, savePhoto}) => {
+    {profile, status, changeUserProfileStatus, isOwner, savePhoto, saveProfile}) => {
 
     const [showContacts, setShowContacts] = useState<boolean>(false)
     const [editMode, setEditMode] = useState<boolean>(false)
+    let initialValue = {}
+    if (profile) {
+        initialValue = {
+            fullName: profile.fullName,
+            aboutMe: profile.aboutMe,
+            lookingForAJob: profile.lookingForAJob,
+            lookingForAJobDescription: profile.lookingForAJobDescription,
+            contacts: {
+                github: profile.contacts.github,
+                vk: profile.contacts.vk,
+                facebook: profile.contacts.facebook,
+                instagram: profile.contacts.instagram,
+                twitter: profile.contacts.twitter,
+                website: profile.contacts.website,
+                youtube: profile.contacts.youtube,
+                mainLink: profile.contacts.mainLink,
+            }
 
+        }
+
+    }
     const changeShowContacts = () => {
         setShowContacts(!showContacts)
     }
@@ -33,9 +54,12 @@ export const ProfileInfo: React.FC<ProfileInfoPropsType> = React.memo((
             savePhoto(e.target.files[0])
         }
     }
-    const onSubmit = (formData: ProfileDataFormType) => {
-        console.log(formData)
-        changeEditMode()
+    const onSubmit = (formData: UserProfileInfoType) => {
+        saveProfile(formData).then (
+            () => {
+                changeEditMode()
+            })
+
     }
     // const getInitialValues = () => {
     //
@@ -58,10 +82,10 @@ export const ProfileInfo: React.FC<ProfileInfoPropsType> = React.memo((
                     <ProfileStatus status={status} changeUserProfileStatus={changeUserProfileStatus}/>
                     {
                         editMode
-                            ? <ProfileDataForm  onSubmit={onSubmit} />
-                            : <ProfileData profile={profile} status={status}
+                            ? <ProfileDataForm initialValues={profile} onSubmit={onSubmit}/>
+                            : <ProfileData profile={profile}
                                            showContacts={showContacts} changeShowContacts={changeShowContacts}
-                                           changeUserProfileStatus={changeShowContacts} isOwner={isOwner}
+                                           isOwner={isOwner}
                                            changeEditMode={changeEditMode}/>
                     }
                 </div>
@@ -76,8 +100,6 @@ export const ProfileInfo: React.FC<ProfileInfoPropsType> = React.memo((
 
 type ProfileDataPropsType = {
     profile: UserProfileInfoType
-    status: string
-    changeUserProfileStatus: (status: string) => void
     changeShowContacts: () => void
     changeEditMode: () => void
     isOwner: boolean
@@ -87,7 +109,7 @@ type ProfileDataPropsType = {
 
 const ProfileData: React.FC<ProfileDataPropsType> = (
     {
-        profile, status, changeUserProfileStatus, isOwner,
+        profile, isOwner,
         showContacts, changeShowContacts, changeEditMode
     }) => {
     return (
@@ -124,7 +146,7 @@ const ProfileData: React.FC<ProfileDataPropsType> = (
 
 type ContactPropsType = {
     contactTitle: string
-    contactValue: string
+    contactValue?: string
 }
 
 export const Contact: React.FC<ContactPropsType> = ({contactTitle, contactValue}) => {
@@ -133,7 +155,7 @@ export const Contact: React.FC<ContactPropsType> = ({contactTitle, contactValue}
     return (
         <div className={s.infoBlockContacts}>
             <div>
-                <b>{contactTitle}: </b>{contactValue}
+                <b>{contactTitle}: </b>{contactValue ? contactValue : ''}
             </div>
         </div>
     )

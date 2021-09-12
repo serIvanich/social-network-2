@@ -1,6 +1,7 @@
 import axios from "axios";
 import {UserType} from "../redux/users-reducer";
 import {UserProfileInfoType} from "../redux/profile-reducer";
+//import {ProfileDataFormType} from "../components/Profile/MyPosts/ProfileInfo/ProfileDataForm/ProfileDataForm";
 
 const instance = axios.create(
     {
@@ -78,8 +79,29 @@ export const profileApi = {
         })
 
             .then(response => response.data)
-    }
+    },
+    saveProfile(data: SaveProfileType) {
+
+        return instance.put<ResponseType>(`profile/`, data)
+            .then(response => response.data)
+    },
 }
 
 
-
+export type SaveProfileType = {
+    userId: number
+    fullName: string
+    aboutMe: string
+    lookingForAJob: boolean
+    lookingForAJobDescription: string
+    contacts: {
+        github: string
+        vk: string
+        facebook: string
+        instagram: string
+        twitter: string
+        website: string
+        youtube: string
+        mainLink: string
+    }
+}
