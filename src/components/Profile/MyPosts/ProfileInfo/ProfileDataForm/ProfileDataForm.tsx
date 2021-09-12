@@ -2,7 +2,7 @@ import React from 'react'
 import {UserProfileInfoType} from '../../../../../redux/profile-reducer'
 import s from '../../../Profile.module.css'
 import {Field, InjectedFormProps, reduxForm} from "redux-form";
-import {Input} from "../../../../common/FormsControls/FormsControls";
+import {createField, Input} from "../../../../common/FormsControls/FormsControls";
 import {maxLengthCreator} from "../../../../../utils/validators/validators";
 import {useSelector} from "react-redux";
 import {AppStateType} from "../../../../../redux/store";
@@ -31,32 +31,32 @@ const profile = useSelector<AppStateType, UserProfileInfoType | null>(state => s
         < form onSubmit={handleSubmit}>
             <button >enter</button>
 
-            <h3>{'name'}</h3>
             <div>
-                <b>About me: </b>{<Field value={'aboutMe'} name={'aboutMe'} component={Input}
-                                          validate={[maxLength30]}/>}
+                {createField('Full name', 'full name', [maxLength30], Input, 'text' )}
+            </div>
+            <div>
+                <b>About me: </b>{createField('aboutMe', 'aboutMe', [maxLength30], Input, 'text' )}
             </div>
 
             <div>
-                <b>Looking for a job: </b>{<Field placeholder={'lookingForAJob'} name={'lookingForAJob'}
-                                                  component={Input} type={'checkBox'}/>}
+                <b>Looking for a job: </b>{createField('lookingForAJob', 'lookingForAJob',
+                [maxLength30], Input, 'checkBox' )}
+
             </div>
             <div>
-                <b>My professional skills: </b>{<Field placeholder={'lookingForAJobDescription'}
-                                                       name={'lookingForAJobDescription'} component={Input}
-                                                       validate={[maxLength30]}/>}
+                <b>My professional skills: </b>{createField('lookingForAJobDescription',
+                'lookingForAJobDescription', [maxLength30], Input, 'text' )}
             </div>
             <div>
             {profile && Object.keys(profile.contacts).map((key, i) => {
                 //@ts-ignore
-                let value = profile.contacts[key]
+                let value: string = profile.contacts[key]
 
                 return <div key={i} className={s.infoBlockContacts}>
-                    <div>
-                        <b>{key}: </b>{<Field placeholder={value}
-                                              name={value} component={Input}
-                                              validate={[maxLength30]}/>}
-                    </div>
+
+                        <b>{key}: </b>{createField(value, key, [maxLength30], Input, 'text' )}
+
+
                 </div>
             })
             }
