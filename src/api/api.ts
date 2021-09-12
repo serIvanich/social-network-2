@@ -88,6 +88,12 @@ export const profileApi = {
 }
 
 
+export const securityApi = {
+    getCaptchaUrl() {
+        return instance.get('security/get-captcha-url/').then(response => response.data)
+}
+}
+
 export type SaveProfileType = {
     userId: number
     fullName: string

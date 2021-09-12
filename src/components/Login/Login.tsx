@@ -7,7 +7,7 @@ import {Redirect} from "react-router-dom";
 
 type LoginPropsType = MapStateToPropsType & MapDispatchToPropsType
 
-const Login: React.FC<LoginPropsType> = ({isAuth, login}) => {
+const Login: React.FC<LoginPropsType> = ({isAuth, login, captchaUrl}) => {
 
     const onSubmit = (formData: LoginFormDataType) => {
         login(formData.email, formData.password, formData.rememberMe)
@@ -16,18 +16,20 @@ const Login: React.FC<LoginPropsType> = ({isAuth, login}) => {
     return (
         <div>
             <h1>LOGIN</h1>
-            <LoginForm onSubmit={onSubmit}/>
+            <LoginForm onSubmit={onSubmit} initialValues={{captchaUrl: captchaUrl}} />
         </div>
     )
 }
 
 type MapStateToPropsType = {
     isAuth: boolean
+    captchaUrl: string | undefined
 }
 
 const MapStateToProps = (state: AppStateType): MapStateToPropsType => {
     return {
-        isAuth: state.auth.isAuth
+        isAuth: state.auth.isAuth,
+        captchaUrl: state.auth.captchaUrl
     }
 }
 
