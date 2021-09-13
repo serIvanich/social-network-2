@@ -10,7 +10,7 @@ type LoginPropsType = MapStateToPropsType & MapDispatchToPropsType
 const Login: React.FC<LoginPropsType> = ({isAuth, login, captchaUrl}) => {
 
     const onSubmit = (formData: LoginFormDataType) => {
-        login(formData.email, formData.password, formData.rememberMe)
+        login(formData.email, formData.password, formData.rememberMe, formData.captcha)
     }
     if (isAuth) return <Redirect to={'/profile'} />
     return (
@@ -34,7 +34,7 @@ const MapStateToProps = (state: AppStateType): MapStateToPropsType => {
 }
 
 type MapDispatchToPropsType = {
-    login: (email: string, password: string, rememberMe: boolean) => void
+    login: (email: string, password: string, rememberMe: boolean, captcha: string) => void
 }
 
 export default connect(MapStateToProps, {login} )(Login)

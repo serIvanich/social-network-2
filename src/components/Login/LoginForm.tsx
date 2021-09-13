@@ -1,6 +1,6 @@
 import React from 'react'
 import {Field, InjectedFormProps, reduxForm} from "redux-form";
-import {Input} from "../common/FormsControls/FormsControls";
+import {createField, Input} from "../common/FormsControls/FormsControls";
 import {maxLengthCreator, required} from "../../utils/validators/validators";
 import s from './../common/FormsControls/FormsControls.module.css'
 
@@ -9,11 +9,12 @@ export type LoginFormDataType = {
     password: string
     rememberMe: boolean
     captchaUrl: string
+    captcha: string
 }
 
 const maxLength29 = maxLengthCreator(29)
 const LoginForm: React.FC<InjectedFormProps<LoginFormDataType>> = (props) => {
-   debugger
+
     return (
         <form onSubmit={props.handleSubmit}>
             <div>
@@ -29,8 +30,11 @@ const LoginForm: React.FC<InjectedFormProps<LoginFormDataType>> = (props) => {
             {props.error && <div className={s.formSummaryError}>
                 {props.error}
             </div>}
+            <div>
+                {props.initialValues.captchaUrl
+                && <div><img src={props.initialValues.captchaUrl}/>{createField('captcha', 'captcha', [], Input )}</div>}
+            </div>
 
-            {props.initialValues.captchaUrl && <img src={props.initialValues.captchaUrl}/>}
             <div>
                 <button>login</button>
             </div>
