@@ -18,8 +18,8 @@ export type UserType = {
     name: string
     status: string
     photos: {
-        small: string
-        large: (string)
+        small: string | null
+        large: string | null
     }
     followed: boolean
 }
