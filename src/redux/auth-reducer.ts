@@ -1,7 +1,9 @@
-import {authApi, securityApi} from "../api/api";
+
 import {ThunkAction} from "redux-thunk";
 import {AppStateType} from "./store";
 import {stopSubmit} from "redux-form";
+import {authApi} from "../api/auth-api";
+import {securityApi} from "../api/security-api";
 
 const SET_AUTH_USER_DATA = 'auth/SET-AUTH-USER-DATA'
 const GET_CAPTCHA_URL_SUCCESS = 'auth/GET-CAPTCHA-URL-SUCCESS'

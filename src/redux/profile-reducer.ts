@@ -1,8 +1,8 @@
 import {ThunkAction} from "redux-thunk";
 import {AppStateType} from "./store";
-import {profileApi, SaveProfileType} from "../api/api";
 import {stopSubmit} from "redux-form";
-//import {ProfileDataFormType} from "../components/Profile/MyPosts/ProfileInfo/ProfileDataForm/ProfileDataForm";
+import {profileApi} from "../api/profile-api";
+import {PhotosType, ProfileType} from "../type/type";
 
 
 export const ADD_POST = 'ADD-POST'
@@ -18,10 +18,10 @@ export type MessageType = {
     likesCount: number
 }
 
-type PhotosType = {
-    small: string
-    large: string
-}
+// type PhotosType = {
+//     small: string
+//     large: string
+// }
 
 export type ContactsType = {
     github: string
@@ -44,7 +44,7 @@ export type ProfilePageType = {
 }
 
 export type UserProfileInfoType = {
-    userId: number
+    userId?: number
     aboutMe?: string
     lookingForAJob?: boolean
     lookingForAJobDescription?: string
@@ -162,7 +162,7 @@ export const savePhotoSuccess = (photos: PhotosType) => ({type: SAVE_PHOTO_SUCCE
 
 type ThunkType = ThunkAction<void, AppStateType, undefined, ProfileActionType>
 
-export const getUserProfile = (userId: number): ThunkType => async (dispatch) => {
+export const getUserProfile = (userId: number| null): ThunkType => async (dispatch) => {
 
     const data = await profileApi.getUserProfile(userId)
     try {
@@ -202,7 +202,7 @@ export const savePhoto = (file: any): ThunkType => async (dispatch) => {
     }
 }
 
-export const saveProfile = (payload: SaveProfileType): ThunkType =>  async (dispatch, getState) => {
+export const saveProfile = (payload: ProfileType): ThunkType =>  async (dispatch, getState) => {
     const data = await profileApi.saveProfile(payload)
 
     if (data.resultCode === 0) {
