@@ -153,35 +153,31 @@ export const getUsers = (pageSize: number, currentPage: number): ThunkType => as
 
 }
 
-const followUnfollowFlow = async (dispatch: Dispatch, userId: number,
+const _followUnfollowFlow = async (dispatch: Dispatch, userId: number,
                                   apiMethod: (userId: number) => Promise<ApiResponseType>,
                                   actionCreator: (userId: number) => ActionType) => {
 
-    try {
+
         dispatch(toggleFollowingProgress(userId, true))
-        const data = await apiMethod(userId)
-        if (data.resultCode === 0) {
+        const response = await apiMethod(userId)
+        if (response.resultCode === 0) {
             dispatch(actionCreator(userId))
         }
         dispatch(toggleFollowingProgress(userId, false))
-    } catch (e) {
-        console.log(e)
-    }
+
 
 }
 
 export const follow = (userId: number): ThunkType => {
-    return async (dispatch, getState) => {
-        const apiMethod = usersApi.getFollow.bind(usersApi)
-        const actionCreator = followSuccess
-        await followUnfollowFlow(dispatch, userId, apiMethod, actionCreator)
+    return async (dispatch) => {
+
+        await _followUnfollowFlow(dispatch, userId, usersApi.getFollow.bind(usersApi), followSuccess)
     }
 
 }
 export const unfollow = (userId: number): ThunkType => {
     return async (dispatch) => {
-        const apiMethod = usersApi.getUnfollow.bind(usersApi)
-        const actionCreator = unfollowSuccess
-        await followUnfollowFlow(dispatch, userId, apiMethod, actionCreator)
+
+        await _followUnfollowFlow(dispatch, userId, usersApi.getUnfollow.bind(usersApi), unfollowSuccess)
     }
 }

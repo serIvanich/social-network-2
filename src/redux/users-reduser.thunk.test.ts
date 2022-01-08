@@ -3,16 +3,14 @@ import {usersApi} from "../api/users-api";
 import {ApiResponseType, ResultCodeEnum} from "../api/api";
 
 jest.mock("../api/users-api")
-
+const userAPIMock = usersApi as jest.Mocked<typeof usersApi>
 
 const result: ApiResponseType = {
+    data: {},
     resultCode: ResultCodeEnum.Success,
     messages: [],
-    data: {},
-
 }
 
-const userAPIMock = usersApi as jest.Mocked<typeof usersApi>
 userAPIMock.getFollow.mockReturnValue(Promise.resolve(result))
 const getStateMock = jest.fn()
 const dispatchMock = jest.fn()
@@ -22,10 +20,11 @@ beforeEach(() => {
     userAPIMock.getFollow.mockClear()
 })
 
-test('how many fn does work in thunk', async() => {
+test('how many fn does work in thunk', async () => {
 
     const thunk = follow(1)
-    await thunk(dispatchMock, getStateMock, undefined)
+    // @ts-ignore
+    await thunk(dispatchMock, getStateMock, {})
     expect(dispatchMock).toBeCalledTimes(3)
 })
 
