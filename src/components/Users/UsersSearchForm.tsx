@@ -1,9 +1,12 @@
 import {Form, Formik, Field} from 'formik';
 import React from 'react'
-import {isSubmitting} from "redux-form";
+import {UsersFilterType} from "../../redux/users-reducer";
 
+type PropsType = {
+    onFilterChanged: (filter: UsersFilterType) => void
+}
 
-export const UsersSearchForm: React.FC = () => {
+export const UsersSearchForm: React.FC<PropsType> = ({onFilterChanged}) => {
 
     const usersSearchFormValidate = (values: any) => {
         const errors = {};
@@ -12,8 +15,12 @@ export const UsersSearchForm: React.FC = () => {
 
     }
 
-    const submitForm = (values: UsersSearchFormType, {setSubmitting}: { setSubmitting: (isSubmitting: boolean) => void }) => {
+    const submitForm = (values: UsersFilterType, {setSubmitting}: { setSubmitting: (isSubmitting: boolean) => void }) => {
         console.log(values)
+        const filter = {
+            term: values.term
+        }
+        onFilterChanged(filter)
         setSubmitting(false)
     }
 

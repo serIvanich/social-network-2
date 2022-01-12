@@ -8,6 +8,7 @@ import {ApiResponseType} from "../api/api";
 const FOLLOW = 'FOLLOW'
 const UNFOLLOW = 'UNFOLLOW'
 const SET_USERS = 'SET-USERS'
+const SET_USERS_FILTER = 'SET-USERS-FILTER'
 const SET_CURRENT_PAGE = 'SET-CURRENT-PAGE'
 const SET_TOTAL_USERS_COUNT = 'SET-TOTAL-USERS-COUNT'
 const TOGGLE_IS_FETCHING = 'TOGGLE-IS-FETCHING'
@@ -24,6 +25,9 @@ export type UserType = {
     }
     followed: boolean
 }
+export type UsersFilterType = {
+    term: string
+}
 export type UsersType = {
     users: Array<UserType>
     pageSize: number
@@ -31,6 +35,7 @@ export type UsersType = {
     currentPage: number
     isFetching: boolean
     followingInProgress: Array<number>
+    filter: UsersFilterType
 }
 
 const initialState: UsersType = {
@@ -40,6 +45,9 @@ const initialState: UsersType = {
     currentPage: 5,
     isFetching: true,
     followingInProgress: [],
+    filter: {
+        term: ''
+    }
 }
 
 type ActionType =
@@ -50,6 +58,7 @@ type ActionType =
     | SetTotalUsersCountType
     | ToggleIsFetchingType
     | ToggleFollowingProgressType
+    | SetUsersFilterType
 
 export const usersReducer = (state: UsersType = initialState, action: ActionType): UsersType => {
     switch (action.type) {
@@ -67,6 +76,10 @@ export const usersReducer = (state: UsersType = initialState, action: ActionType
             return {
                 ...state,
                 users: action.users
+            }
+        case "SET-USERS-FILTER":
+            return {
+                ...state, filter: action.payload
             }
         case "SET-CURRENT-PAGE":
             return {
@@ -126,6 +139,11 @@ export const setTotalUsersCount = (totalCount: number): SetTotalUsersCountType =
     type: SET_TOTAL_USERS_COUNT,
     totalUsersCount: totalCount,
 })
+type SetUsersFilterType = { type: typeof SET_USERS_FILTER, payload: {term: string} }
+export const setUsersFilter = (term: string): SetUsersFilterType => ({
+    type: SET_USERS_FILTER,
+    payload: {term}
+})
 export type ToggleIsFetchingType = { type: typeof TOGGLE_IS_FETCHING, isFetching: boolean }
 export const toggleIsFetching = (isFetching: boolean): ToggleIsFetchingType => ({
     type: TOGGLE_IS_FETCHING,
@@ -138,11 +156,12 @@ export const toggleFollowingProgress = (userId: number, isFetching: boolean): To
 })
 
 type ThunkType = ThunkAction<void, AppStateType, undefined, ActionType>
-export const getUsers = (pageSize: number, currentPage: number): ThunkType => async (dispatch) => {
+export const getUsers = (pageSize: number, currentPage: number, term: string): ThunkType => async (dispatch) => {
     try {
         dispatch(toggleIsFetching(true))
         dispatch(setCurrentPage(currentPage))
-        const data = await usersApi.getUsers(pageSize, currentPage)
+        dispatch(setUsersFilter(term))
+        const data = await usersApi.getUsers(pageSize, currentPage, term)
 
         dispatch(toggleIsFetching(false))
         dispatch(setUsers(data.items))
