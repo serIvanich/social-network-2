@@ -1,4 +1,3 @@
-
 import {ThunkAction} from "redux-thunk";
 import {AppStateType} from "./store";
 import {stopSubmit} from "redux-form";
@@ -77,9 +76,9 @@ export const login = (email: string, password: string, rememberMe: boolean, capt
         if (data.resultCode === 0) {
             dispatch(getAuthUserData())
         } else {
-         if (data.resultCode === 10) {
-             dispatch(getCaptchaUrl())
-         }
+            if (data.resultCode === 10) {
+                dispatch(getCaptchaUrl())
+            }
             const message = data.messages.length > 0 ? data.messages[0] : 'Some error'
             //@ts-ignore
             dispatch(stopSubmit('login', {_error: message}))
@@ -101,7 +100,7 @@ export const logout = (): ThunkType => async (dispatch) => {
 
 export const getCaptchaUrl = (): ThunkType => async (dispatch) => {
     const data = await securityApi.getCaptchaUrl()
-const captchaUrl = data.url
+    const captchaUrl = data.url
     dispatch(getCaptchaUrlSuccess(captchaUrl))
 
 }

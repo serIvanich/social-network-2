@@ -2,6 +2,7 @@ import React from 'react'
 import {UserType} from "../../redux/users-reducer"
 import {Paginator} from "../common/Paginator/Paginator";
 import {User} from "./User";
+import {UsersSearchForm} from "./UsersSearchForm";
 
 type UsersPropsType = {
     users: Array<UserType>
@@ -26,6 +27,7 @@ const Users: React.FC<UsersPropsType> = ({
     return (
         <div>
 
+            <UsersSearchForm/>
             <Paginator totalItemsCount={totalUsersCount} pageSize={pageSize} currentPage={currentPage}
                        isFetching={isFetching} changeCurrentPage={changeCurrentPage}/>
             {
